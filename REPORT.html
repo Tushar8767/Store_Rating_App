@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DevOps Report - Tushar Chaugule</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.5; margin: 35px 45px; color: #1d2433; font-size: 10.5pt; }
+h1 { font-size: 17pt; color: #1f4e79; border-bottom: 2px solid #1f4e79; padding-bottom: 4px; margin-top: 0; }
+h2 { font-size: 13pt; color: #173b5c; border-bottom: 1px solid #d9dde4; padding-bottom: 3px; margin-top: 22px; }
+h3 { font-size: 11.5pt; color: #333; margin-top: 14px; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 9.5pt; }
+th, td { border: 1px solid #c9d0db; padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background-color: #eef2f7; color: #1f4e79; font-weight: 600; }
+pre { background: #f4f5f7; border: 1px solid #d9dde4; padding: 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 8.5pt; overflow-x: auto; }
+code { font-family: Consolas, monospace; background: #eef2f7; padding: 1px 4px; border-radius: 3px; font-size: 9pt; }
+blockquote { background: #fef8e7; border-left: 4px solid #f59e0b; margin: 12px 0; padding: 8px 12px; font-size: 9.5pt; }
+@page { size: A4; margin: 12mm 15mm; }
+</style>
+</head>
+<body>
+<h1>Design and Demonstration of a Highly Available Store Rating Application Using DevOps Tools</h1>
+<p><strong>A Technical Case Study and Mini-Project Report for Academic Evaluation</strong></p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h3>Academic Information & Submission Details</h3>
+<li>**Student Name:** Tushar Chaugule  </li>
+<li>**Roll Number:** 4148  </li>
+<li>**RBT Number:** RBT23CS051  </li>
+<li>**Class and Division:** Final Year - A  </li>
+<li>**College:** JSPM's Rajarshi Shahu College of Engineering (RSCOE), Pune  </li>
+<li>**Faculty Guide:** Prof. Neha Jain  </li>
+<li>**Academic Year:** 2026–2027  </li>
+<li>**Subject:** DevOps  </li>
+<li>**Assignment:** TA2 — DevOps Case Study / Mini Project  </li>
+<li>**Submission Date:** 14 October 2026  </li>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>1. Title</h2>
+<p><strong>Design and Demonstration of a Highly Available Store Rating Application Using DevOps Tools</strong>  </p>
+<p><em>Sub-theme: Cloud-Based Highly Available Application — An application should remain available even if one application server fails.</em></p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>2. Objective</h2>
+<p>The primary objectives of this DevOps mini-project are:</p>
+<p>1. To containerize an existing multi-tier full-stack application (Store Rating Application) using Docker and Docker Compose.</p>
+<p>2. To design and deploy a <strong>Highly Available (HA)</strong> architecture featuring multiple stateless backend application instances behind an Nginx reverse proxy and load balancer.</p>
+<p>3. To implement automated health checks and failover mechanisms ensuring that client requests remain uninterrupted even if an active backend instance crashes or is taken offline.</p>
+<p>4. To establish a Continuous Integration (CI) pipeline using GitHub Actions that automates testing, linting, frontend asset compilation, and Docker container verification.</p>
+<p>5. To expose application and system runtime metrics for monitoring and assess the practical trade-offs between local container high availability and cloud-scale multi-zone fault tolerance.</p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>3. Problem Statement</h2>
+<p>Modern enterprise web applications must provide continuous service availability. In a conventional single-server deployment, any crash of the application process, operating system failure, or hardware fault results in immediate, catastrophic downtime for end users. </p>
+<p>For consumer-facing systems such as the <strong>Store Rating Application</strong>—where normal users submit ratings, store owners analyze customer sentiment, and administrators supervise operations—unplanned downtime degrades user trust and halts business operations.</p>
+<p>The technical challenge is to eliminate single points of failure at the application tier by deploying redundant, horizontally scaled backend instances, implementing real-time health detection, automating traffic redirection upon failure, and verifying deployment integrity through continuous integration pipelines.</p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>4. Technologies & Tools Used</h2>
+<table>
+  <tr><td>Tool / Technology</td><td>Version / Category</td><td>Role in the DevOps Architecture</td></tr>
+  <tr><td>**Docker**</td><td>Multi-Stage / Alpine</td><td>Process-level isolation and containerization of frontend, backend, database, and load balancer.</td></tr>
+  <tr><td>**Docker Compose**</td><td>v2 Specification</td><td>Multi-container orchestration, private bridge networking (`store-net`), and health-checked startup sequencing.</td></tr>
+  <tr><td>**Nginx**</td><td>Reverse Proxy / Load Balancer</td><td>Single entrypoint (Port 8080); round-robin load distribution; automatic upstream failure detection (`max_fails=2`, `fail_timeout=5s`).</td></tr>
+  <tr><td>**Node.js & Express.js**</td><td>v20 LTS / v4.19</td><td>Stateless REST API service providing application logic, `/api/health` checks, and Prometheus `/api/metrics`.</td></tr>
+  <tr><td>**React 18 & Vite**</td><td>SPA / Nginx Static Serve</td><td>Responsive client user interface compiled into static assets served via a lightweight Nginx web server.</td></tr>
+  <tr><td>**PostgreSQL**</td><td>Relational Database v16</td><td>Persistent relational storage with custom constraints, relational integrity, and volume persistence (`pgdata`).</td></tr>
+  <tr><td>**GitHub Actions**</td><td>CI/CD Automation</td><td>Automated workflow executing test suites against a live PostgreSQL service container and verifying image builds.</td></tr>
+  <tr><td>**Supertest & Node Test Runner**</td><td>Automated Testing</td><td>Integration and unit testing verifying health endpoints, authentication, validation, and role-based access.</td></tr>
+</table>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>5. Implementation & Approach</h2>
+<h3>5.1 Architecture Transformation</h3>
+<p>The existing single-instance monolithic deployment was transformed into a decoupled, four-tier architecture:</p>
+<p>1. <strong>Unified Gateway:</strong> An Nginx reverse proxy listens on public port <code>8080</code>. It routes static UI traffic to the React container and proxies <code>/api/*</code> traffic to the backend server pool.</p>
+<p>2. <strong>Redundant Stateless Application Tier:</strong> Two identical Express containers (<code>store-rating-backend-1</code> and <code>store-rating-backend-2</code>) run concurrently on internal port <code>5000</code>. Both containers share identical database credentials and <code>JWT_SECRET</code>. Because JSON Web Tokens are stateless, any authenticated user session is valid across either instance.</p>
+<p>3. <strong>Database Tier:</strong> A single PostgreSQL container mounts a persistent Docker volume (<code>pgdata</code>), initialized automatically on first boot via <code>schema.sql</code> and <code>autoMigrate.js</code>.</p>
+<h3>5.2 Health Checks & Automatic Upstream Failover</h3>
+<p>A dedicated health endpoint (<code>/api/health</code>) was added to the backend. It verifies database connectivity (<code>SELECT 1</code>), measures uptime, and returns the unique container identity (<code>instanceId</code>).</p>
+<p>In Nginx, the upstream pool is defined as:</p>
+<pre><code>upstream backend_servers {
+    server backend-1:5000 max_fails=2 fail_timeout=5s;
+    server backend-2:5000 max_fails=2 fail_timeout=5s;
+}</code></pre>
+<p>If an active instance fails or times out, Nginx immediately triggers <code>proxy_next_upstream</code>, forwarding the in-flight request to the surviving backend within milliseconds. The failed instance is quarantined for 5 seconds and automatically reintroduced once healthy.</p>
+<h3>5.3 Automated CI Pipeline</h3>
+<p>A continuous integration pipeline was created at <code>.github/workflows/ci.yml</code>. On every code push or pull request to the <code>main</code> branch, the workflow:</p>
+<p>1. Checks out the repository and configures Node.js 20.</p>
+<p>2. Provisions a native PostgreSQL service container with active health checking.</p>
+<p>3. Seeds the test database and executes the 14-step automated backend test suite.</p>
+<p>4. Compiles the React frontend using Vite.</p>
+<p>5. Builds Docker images for both frontend and backend to guarantee containerization integrity.</p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>6. Architecture Diagram</h2>
+<pre><code>                              [ User Web Browser ]
+                                        │
+                                        ▼ HTTP Port 8080
+                    ┌───────────────────────────────────────────┐
+                    │      Nginx Reverse Proxy &amp; Load Balancer   │
+                    │      (store-rating-nginx / Port 8080)     │
+                    └─────────────────────┬─────────────────────┘
+                                          │
+                     ┌────────────────────┴───────────────────┐
+                     │ (Static App)                           │ (/api/* Dynamic API)
+                     ▼                                        ▼ Round-Robin &amp; Failover
+        ┌─────────────────────────┐               ┌───────────────────────────────┐
+        │  React Frontend Server  │               │      Nginx Upstream Pool      │
+        │ (store-rating-frontend) │               │   backend_servers (5000)      │
+        └─────────────────────────┘               └───────┬───────────────┬───────┘
+                                                          │               │
+                                           ┌──────────────┘               └──────────────┐
+                                           ▼                                             ▼
+                             ┌───────────────────────────┐                 ┌───────────────────────────┐
+                             │  Express API Instance 1   │                 │  Express API Instance 2   │
+                             │ (store-rating-backend-1)  │                 │ (store-rating-backend-2)  │
+                             │   Identity: backend-1     │                 │   Identity: backend-2     │
+                             │   Health: /api/health     │                 │   Health: /api/health     │
+                             │   Metrics: /api/metrics   │                 │   Metrics: /api/metrics   │
+                             └─────────────┬─────────────┘                 └─────────────┬─────────────┘
+                                           │                                             │
+                                           │       Shared Relational Queries             │
+                                           └──────────────────────┬──────────────────────┘
+                                                                  ▼
+                                                   ┌───────────────────────────┐
+                                                   │    PostgreSQL Database    │
+                                                   │    (store-rating-db)      │
+                                                   │    Port: 5432 (Internal)  │
+                                                   │    Volume: pgdata         │
+                                                   └───────────────────────────┘</code></pre>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>7. Results & Verified Outcomes</h2>
+<p>All verification steps were executed and validated on the test system:</p>
+<h3>7.1 Automated Integration Test Results</h3>
+<p>The backend test suite (<code>npm test</code>) executed 14 individual assertions:</p>
+<li>**Health & Metrics:** Verified HTTP 200, status `UP`, active database connectivity, and Prometheus metrics generation.</li>
+<li>**Authentication:** Verified rejection of invalid credentials (HTTP 401) and issuance of valid signed JWT tokens for Normal Users and Administrators.</li>
+<li>**Input Validations:** Enforced name length boundaries (20–60 characters) and password complexity rules (uppercase + special character).</li>
+<li>**Role-Based Access Control (RBAC):** Verified that Normal Users can view stores but receive HTTP 403 Forbidden when attempting to access the Admin Dashboard.</li>
+<li>**Status:** **14/14 tests passed (0 failures, 100% pass rate).**</li>
+<h3>7.2 High Availability & Failover Live Demonstration</h3>
+<p>Using the automated test suite <code>node scripts/run-ha-test.js</code>:</p>
+<p>1. <strong>Normal Operation (Test A):</strong> Dispatched 6 requests through the load balancer on port <code>8080</code>. The load balancer evenly distributed traffic between <code>backend-instance-1</code> (3 requests) and <code>backend-instance-2</code> (3 requests), proving active round-robin distribution.</p>
+<p>2. <strong>Instance Failure (Test B):</strong> Terminated <code>backend-instance-1</code>. Dispatched 4 subsequent requests through port <code>8080</code>. All 4 requests were successfully handled by the surviving <code>backend-instance-2</code> with <strong>zero user downtime</strong> and zero dropped connections.</p>
+<p>3. <strong>Recovery (Test C):</strong> Restarted <code>backend-instance-1</code>. The load balancer detected instance recovery within 3 seconds and automatically restored dual-instance round-robin distribution.</p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>8. Architectural Limitations & Production High Availability</h2>
+<p>While this project successfully demonstrates application-tier redundancy, several architectural limitations inherent to local containerization must be noted:</p>
+<p>1. <strong>Single Point of Failure (SPOF) at Database Tier:</strong> In this local deployment, both backends connect to a single PostgreSQL instance. If the database crashes, both backends will fail. Production high availability requires Multi-AZ database clusters (such as AWS Aurora or RDS Multi-AZ) with automated replica failover.</p>
+<p>2. <strong>Host-Level Vulnerability:</strong> All containers execute on a single physical machine. A hardware failure, power loss, or OS crash terminates the entire system. True cloud high availability requires distributing instances across geographically isolated Availability Zones (AZs) managed by an Auto Scaling Group or Kubernetes cluster.</p>
+<p>3. <strong>Load Balancer Redundancy:</strong> A single Nginx instance serves as the entrypoint. In cloud production, managed Anycast DNS or cloud-managed load balancers (such as AWS ALB) provide redundant frontend gateways.</p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h2>9. Conclusion</h2>
+<p>This project successfully designed, implemented, and verified a <strong>Cloud-Based Highly Available Application Architecture</strong> for the Store Rating Web Application using modern DevOps tools. </p>
+<p>Containerization with Docker eliminated environment inconsistencies, multi-instance deployment with Nginx achieved seamless load balancing and automated failover, and GitHub Actions established continuous delivery validation. The implementation satisfies all criteria of the TA2 Mini-Project assignment by proving that the application remains fully accessible and functional even when an active application server fails.</p>
+<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
+<h3>Academic Sign-off</h3>
+<p><strong>Student Signature:</strong> __________________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Date:</strong> 14 October 2026  </p>
+<p><br><br></p>
+<p><strong>Faculty Guide Signature:</strong> __________________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Date:</strong> __________________________  </p>
+<p><em>(Prof. Neha Jain)</em></p>
+</body>
+</html>

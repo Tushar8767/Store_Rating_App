@@ -1,0 +1,122 @@
+services:
+  # Database service
+  postgres:
+    image: postgres:16-alpine
+    container_name: store-rating-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres123}
+      POSTGRES_DB: ${DB_NAME:-store_rating}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-store_rating}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - store-net
+
+  # Express API Instance 1
+  backend-1:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: store-rating-backend-1
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      INSTANCE_ID: backend-instance-1
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres123}
+      DB_NAME: ${DB_NAME:-store_rating}
+      JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_devops_assignment_2026}
+      JWT_EXPIRES_IN: 8h
+      CLIENT_ORIGIN: http://localhost:8080
+      AUTO_MIGRATE: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - store-net
+
+  # Express API Instance 2 (Redundant instance for High Availability)
+  backend-2:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: store-rating-backend-2
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      INSTANCE_ID: backend-instance-2
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres123}
+      DB_NAME: ${DB_NAME:-store_rating}
+      JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_devops_assignment_2026}
+      JWT_EXPIRES_IN: 8h
+      CLIENT_ORIGIN: http://localhost:8080
+      AUTO_MIGRATE: "false"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - store-net
+
+  # React Frontend (built into static Nginx image)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: store-rating-frontend
+    restart: unless-stopped
+    networks:
+      - store-net
+
+  # Reverse Proxy & Load Balancer (Single Public Entrypoint)
+  nginx:
+    image: nginx:alpine
+    container_name: store-rating-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      backend-1:
+        condition: service_healthy
+      backend-2:
+        condition: service_healthy
+      frontend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/lb-health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - store-net
+
+networks:
+  store-net:
+    driver: bridge
+
+volumes:
+  pgdata:
+    driver: local

@@ -11,6 +11,49 @@ const owner = require('../controllers/ownerController');
 const router = express.Router();
 const h = asyncHandler;
 
+// health check & monitoring
+const os = require('os');
+const pool = require('../config/db');
+
+router.get('/health', async (req, res) => {
+  let dbStatus = 'healthy';
+  try {
+    await pool.query('SELECT 1');
+  } catch (err) {
+    dbStatus = 'unhealthy';
+  }
+
+  const isHealthy = dbStatus === 'healthy';
+  res.status(isHealthy ? 200 : 503).json({
+    status: isHealthy ? 'UP' : 'DOWN',
+    timestamp: new Date().toISOString(),
+    instanceId: process.env.INSTANCE_ID || os.hostname(),
+    port: process.env.PORT || 5000,
+    database: dbStatus,
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+  });
+});
+
+router.get('/metrics', async (req, res) => {
+  const mem = process.memoryUsage();
+  res.setHeader('Content-Type', 'text/plain; version=0.0.4');
+  res.send(
+`# HELP app_uptime_seconds Process uptime in seconds
+# TYPE app_uptime_seconds gauge
+app_uptime_seconds ${process.uptime()}
+
+# HELP app_memory_rss_bytes Process resident set size
+# TYPE app_memory_rss_bytes gauge
+app_memory_rss_bytes ${mem.rss}
+
+# HELP app_memory_heap_used_bytes Process heap memory used
+# TYPE app_memory_heap_used_bytes gauge
+app_memory_heap_used_bytes ${mem.heapUsed}
+`
+  );
+});
+
 // public
 router.post('/auth/register', h(auth.register));
 router.post('/auth/login', h(auth.login));

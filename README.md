@@ -5,18 +5,6 @@ A full-stack, containerized store rating platform upgraded for the **DevOps TA2 
 
 ---
 
-## Academic Information
-
-- **Student Name:** Tushar Chaugule
-- **Roll Number:** 4148
-- **RBT Number:** RBT23CS051
-- **Class & Division:** Final Year - A
-- **College:** JSPM's RSCOE, Pune
-- **Faculty Guide:** Prof. Neha Jain
-- **Academic Year:** 2026–2027
-- **Subject:** DevOps (TA2 Mini Project / Case Study)
-- **Submission Date:** 14 October 2026
-
 ---
 
 ## 1. Project & DevOps Overview
@@ -229,7 +217,7 @@ docker compose up -d --scale backend-1=2
 
 ---
 
-## 9. Academic Project Documentation Files
+## 9.  Project Documentation Files
 
 - [`REPORT.md`](REPORT.md) / [`REPORT.pdf`](REPORT.pdf) — Complete 2–4 page academic mini-project report with cover header and faculty signature space.
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — Comprehensive architectural analysis and Single Point of Failure (SPOF) discussion.

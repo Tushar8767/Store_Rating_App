@@ -1,6 +1,6 @@
 # Store Rating Application — DevOps & High Availability Upgrade
 
-A full-stack, containerized store rating platform upgraded for the **DevOps TA2 Mini-Project**:  
+A full-stack, containerized store rating platform upgraded for the **DevOps**:  
 **“Cloud-Based Highly Available Application — An application should remain available even if one application server fails.”**
 
 ---

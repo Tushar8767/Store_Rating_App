@@ -21,6 +21,13 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 
+# Local academic reports (keep local only, do not push to GitHub)
+REPORT.pdf
+REPORT.html
+REPORT.md
+VIVA-QUESTIONS.md
+scripts/generate-html.js
+
 # Editor and OS files
 .DS_Store
 Thumbs.db

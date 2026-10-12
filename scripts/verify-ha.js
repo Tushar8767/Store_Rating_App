@@ -22,10 +22,8 @@ function sleep(ms) {
 
 async function runDemo() {
   console.log('================================================================');
-  console.log('DEVOPS TA2 MINI-PROJECT: HIGH AVAILABILITY & FAILOVER DEMO');
+  console.log('HIGH AVAILABILITY & FAILOVER DEMO');
   console.log('Application: Store Rating Web App');
-  console.log('Student: Tushar Chaugule (Roll: 4148, RBT: RBT23CS051)');
-  console.log('College: JSPM\'s RSCOE | Guide: Prof. Neha Jain');
   console.log('================================================================\n');
 
   console.log('[STAGE 1] Testing Normal Operation & Load Balancing Distribution:');

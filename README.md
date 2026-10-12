@@ -148,41 +148,41 @@ The database is pre-seeded with accounts for all roles:
 
 ---
 
-## 6. How to Demonstrate to Prof. Neha Jain
+## 6. High Availability & Failover Verification Steps
 
-### 1. Show Application & Architecture (1 minute)
+### 1. Verify Application & Architecture
 - Open `http://localhost:8080` in the browser.
 - Log in as Normal User (`rahul.sharma@example.com` / `Rahul@123`) $\rightarrow$ browse stores, submit a rating.
-- Log in as Admin (`admin@storerating.com` / `Admin@123`) $\rightarrow$ show dashboard metrics, user directory.
-- Explain the decoupled 4-tier architecture (`ARCHITECTURE.md`).
+- Log in as Admin (`admin@storerating.com` / `Admin@123`) $\rightarrow$ inspect dashboard metrics and user directory.
+- Review the decoupled 4-tier architecture (`ARCHITECTURE.md`).
 
-### 2. Demonstrate Round-Robin Load Balancing (1 minute)
+### 2. Verify Round-Robin Load Balancing
 - Query the load balancer multiple times:
   ```bash
   curl http://localhost:8080/api/health
   ```
-- Show how the returned `instanceId` alternates between `backend-1` and `backend-2`.
+- Notice how the returned `instanceId` alternates between `backend-1` and `backend-2`.
 
-### 3. Demonstrate Instance Failure & Failover (1 minute)
+### 3. Simulate Instance Failure & Failover
 - Stop `backend-1`:
   ```bash
   docker compose stop backend-1
   ```
-  *(Or kill the instance 1 process in the local test script)*
+  *(Or stop instance 1 in the local test script)*
 - Send requests to `http://localhost:8080/api/health` again:
-  - Show that requests are immediately served by `backend-2` with **zero errors**.
-  - Show that the frontend continues working seamlessly.
+  - Requests are immediately served by `backend-2` with **zero errors**.
+  - The frontend continues working seamlessly.
 
-### 4. Demonstrate Recovery (30 seconds)
+### 4. Verify Instance Recovery
 - Restart `backend-1`:
   ```bash
   docker compose start backend-1
   ```
 - Send requests again $\rightarrow$ traffic resumes balancing across both instances.
 
-### 5. Show Automated Tests & CI/CD (1 minute)
-- Run `npm test` inside `backend/` $\rightarrow$ show all 14 tests passing.
-- Open `.github/workflows/ci.yml` $\rightarrow$ explain automated testing and container build validation on GitHub.
+### 5. Automated Tests & CI/CD
+- Run `npm test` inside `backend/` $\rightarrow$ all 14 tests pass.
+- See `.github/workflows/ci.yml` for automated testing and container build validation on GitHub.
 
 ---
 
@@ -217,10 +217,8 @@ docker compose up -d --scale backend-1=2
 
 ---
 
-## 9.  Project Documentation Files
+## 9. Project Documentation Files
 
-- [`REPORT.md`](REPORT.md) / [`REPORT.pdf`](REPORT.pdf) — Complete 2–4 page academic mini-project report with cover header and faculty signature space.
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — Comprehensive architectural analysis and Single Point of Failure (SPOF) discussion.
-- [`TEST-RESULTS.md`](TEST-RESULTS.md) — Exact procedures, expected results, and actual verified test outputs.
-- [`VIVA-QUESTIONS.md`](VIVA-QUESTIONS.md) — 15 comprehensive viva questions with simple explanations.
+- [`TEST-RESULTS.md`](TEST-RESULTS.md) — Test procedures, expected results, and verified test outputs.
 - [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) — Diagnostic and resolution guide for common deployment errors.

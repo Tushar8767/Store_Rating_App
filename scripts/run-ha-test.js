@@ -24,11 +24,8 @@ function sleep(ms) {
 
 async function run() {
   console.log('========================================================================');
-  console.log(' DEVOPS TA2: HIGH AVAILABILITY & FAILOVER DEMO SUITE');
+  console.log(' HIGH AVAILABILITY & FAILOVER DEMO SUITE');
   console.log(' Project: Store Rating Web App');
-  console.log(' Student: Tushar Chaugule | Roll: 4148 | RBT: RBT23CS051');
-  console.log(' College: JSPM\'s RSCOE | Faculty: Prof. Neha Jain');
-  console.log(' Academic Year: 2026-2027 | Subject: DevOps');
   console.log('========================================================================\n');
 
   const backendDir = path.join(__dirname, '..', 'backend');

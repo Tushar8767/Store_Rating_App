@@ -1,10 +1,6 @@
 # System Architecture: Highly Available Store Rating Application
 
-**Assignment:** DevOps TA2 Mini-Project  
-**Topic:** Cloud-Based Highly Available Application — An application should remain available even if one application server fails  
-**Student:** Tushar Chaugule (Roll No: 4148, RBT: RBT23CS051)  
-**College:** JSPM's RSCOE | **Faculty:** Prof. Neha Jain  
-**Academic Year:** 2026–2027  
+**Topic:** Cloud-Based Highly Available Application — An application should remain available even if one application server fails
 
 ---
 

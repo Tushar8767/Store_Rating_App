@@ -1,10 +1,6 @@
 # Test Procedures & Verified Results
 
-**Project:** Store Rating Application — High Availability & DevOps Architecture  
-**Assignment:** DevOps TA2 Mini-Project  
-**Student:** Tushar Chaugule (Roll No: 4148, RBT: RBT23CS051)  
-**College:** JSPM's RSCOE | **Faculty:** Prof. Neha Jain  
-**Execution Date:** 10 October 2026  
+**Project:** Store Rating Application — High Availability & DevOps Architecture
 
 ---
 

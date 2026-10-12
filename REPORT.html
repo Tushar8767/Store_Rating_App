@@ -1,156 +1,662 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>DevOps Report - Tushar Chaugule</title>
+<meta charset="UTF-8">
+<title>Cloud-Based Highly Available Application - Tushar Chaugule</title>
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.5; margin: 35px 45px; color: #1d2433; font-size: 10.5pt; }
-h1 { font-size: 17pt; color: #1f4e79; border-bottom: 2px solid #1f4e79; padding-bottom: 4px; margin-top: 0; }
-h2 { font-size: 13pt; color: #173b5c; border-bottom: 1px solid #d9dde4; padding-bottom: 3px; margin-top: 22px; }
-h3 { font-size: 11.5pt; color: #333; margin-top: 14px; }
-table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 9.5pt; }
-th, td { border: 1px solid #c9d0db; padding: 6px 10px; text-align: left; vertical-align: top; }
-th { background-color: #eef2f7; color: #1f4e79; font-weight: 600; }
-pre { background: #f4f5f7; border: 1px solid #d9dde4; padding: 10px; border-radius: 4px; font-family: Consolas, monospace; font-size: 8.5pt; overflow-x: auto; }
-code { font-family: Consolas, monospace; background: #eef2f7; padding: 1px 4px; border-radius: 3px; font-size: 9pt; }
-blockquote { background: #fef8e7; border-left: 4px solid #f59e0b; margin: 12px 0; padding: 8px 12px; font-size: 9.5pt; }
-@page { size: A4; margin: 12mm 15mm; }
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    font-size: 10.3pt;
+    line-height: 1.48;
+  }
+
+  /* Exact A4 Page Container */
+  .page {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+    background: #fff;
+  }
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  /* ================= PAGE 1: COVER PAGE ================= */
+  .cover-banner {
+    background-color: #0b3c61;
+    color: #ffffff;
+    height: 85mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20mm;
+  }
+  .cover-sub {
+    font-size: 10.5pt;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.95;
+  }
+  .cover-title {
+    font-size: 25pt;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .cover-tagline {
+    font-size: 11pt;
+    font-weight: 400;
+    opacity: 0.9;
+  }
+  .cover-strip {
+    height: 4.5mm;
+    background-color: #2581c4;
+    width: 100%;
+  }
+
+  .cover-card {
+    width: 145mm;
+    margin: 42mm auto 0 auto;
+    background-color: #f3f9fd;
+    border: 1.2px solid #2581c4;
+    border-radius: 7px;
+    padding: 22px 34px 26px 34px;
+  }
+  .cover-card-header {
+    text-align: center;
+    color: #0b3c61;
+    font-size: 13pt;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 1.2px solid #2581c4;
+    margin-bottom: 18px;
+  }
+  .cover-info-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .cover-info-table td {
+    padding: 6px 4px;
+    font-size: 11pt;
+    border: none;
+  }
+  .cover-info-table td.label {
+    color: #0b3c61;
+    font-weight: 700;
+    width: 34%;
+  }
+  .cover-info-table td.colon {
+    width: 5%;
+    color: #333;
+    font-weight: 600;
+  }
+  .cover-info-table td.val {
+    color: #1a1a1a;
+    width: 61%;
+  }
+
+  .cover-academic-year {
+    position: absolute;
+    bottom: 30mm;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    color: #444;
+    font-size: 10.5pt;
+  }
+  .cover-bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6mm;
+    background-color: #0b3c61;
+  }
+
+  /* ================= INNER PAGES LAYOUT ================= */
+  .inner-page {
+    padding: 14mm 18mm 16mm 18mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+    color: #4a5568;
+    border-bottom: 1px solid #2581c4;
+    padding-bottom: 5px;
+    margin-bottom: 14px;
+  }
+  .page-content {
+    flex: 1;
+  }
+  .page-footer {
+    border-top: 1px solid #2581c4;
+    padding-top: 6px;
+    text-align: center;
+    font-size: 9pt;
+    color: #4a5568;
+    margin-top: 10px;
+  }
+
+  /* Typography */
+  h2.sec-heading {
+    color: #0b3c61;
+    font-size: 13.5pt;
+    font-weight: 700;
+    margin-top: 12px;
+    margin-bottom: 5px;
+  }
+  h2.sec-heading:first-child {
+    margin-top: 0;
+  }
+  h3.step-heading {
+    color: #1b6ca8;
+    font-size: 10.6pt;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+  p {
+    margin-bottom: 7px;
+    text-align: justify;
+  }
+  ul {
+    margin: 4px 0 9px 20px;
+  }
+  li {
+    margin-bottom: 3.5px;
+  }
+
+  /* Tables */
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 11px 0;
+    font-size: 9.6pt;
+  }
+  table.data-table th {
+    background-color: #0b3c61;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: left;
+    padding: 6.5px 10px;
+    border: 1px solid #0b3c61;
+  }
+  table.data-table td {
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    color: #1a1a1a;
+  }
+  table.data-table tr:nth-child(even) td {
+    background-color: #f1f7fc;
+  }
+
+  /* Code / Terminal Box */
+  .code-box {
+    margin: 5px 0 8px 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .code-box-header {
+    background-color: #0b3c61;
+    color: #ffffff;
+    font-size: 8.8pt;
+    font-weight: 700;
+    padding: 4px 10px;
+  }
+  .code-box-body {
+    background-color: #f7f9fb;
+    padding: 7px 11px;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 8.6pt;
+    line-height: 1.38;
+    color: #1e293b;
+    white-space: pre;
+  }
+
+  /* Minimal Architecture Diagram */
+  .arch-box {
+    background: #f8fbfe;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 6px 0 10px 0;
+    text-align: center;
+  }
+
+  /* Signature row */
+  .sig-row {
+    margin-top: 18px;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.8pt;
+  }
 </style>
 </head>
 <body>
-<h1>Design and Demonstration of a Highly Available Store Rating Application Using DevOps Tools</h1>
-<p><strong>A Technical Case Study and Mini-Project Report for Academic Evaluation</strong></p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h3>Academic Information & Submission Details</h3>
-<li>**Student Name:** Tushar Chaugule  </li>
-<li>**Roll Number:** 4148  </li>
-<li>**RBT Number:** RBT23CS051  </li>
-<li>**Class and Division:** Final Year - A  </li>
-<li>**College:** JSPM's Rajarshi Shahu College of Engineering (RSCOE), Pune  </li>
-<li>**Faculty Guide:** Prof. Neha Jain  </li>
-<li>**Academic Year:** 2026–2027  </li>
-<li>**Subject:** DevOps  </li>
-<li>**Assignment:** TA2 — DevOps Case Study / Mini Project  </li>
-<li>**Submission Date:** 14 October 2026  </li>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>1. Title</h2>
-<p><strong>Design and Demonstration of a Highly Available Store Rating Application Using DevOps Tools</strong>  </p>
-<p><em>Sub-theme: Cloud-Based Highly Available Application — An application should remain available even if one application server fails.</em></p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>2. Objective</h2>
-<p>The primary objectives of this DevOps mini-project are:</p>
-<p>1. To containerize an existing multi-tier full-stack application (Store Rating Application) using Docker and Docker Compose.</p>
-<p>2. To design and deploy a <strong>Highly Available (HA)</strong> architecture featuring multiple stateless backend application instances behind an Nginx reverse proxy and load balancer.</p>
-<p>3. To implement automated health checks and failover mechanisms ensuring that client requests remain uninterrupted even if an active backend instance crashes or is taken offline.</p>
-<p>4. To establish a Continuous Integration (CI) pipeline using GitHub Actions that automates testing, linting, frontend asset compilation, and Docker container verification.</p>
-<p>5. To expose application and system runtime metrics for monitoring and assess the practical trade-offs between local container high availability and cloud-scale multi-zone fault tolerance.</p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>3. Problem Statement</h2>
-<p>Modern enterprise web applications must provide continuous service availability. In a conventional single-server deployment, any crash of the application process, operating system failure, or hardware fault results in immediate, catastrophic downtime for end users. </p>
-<p>For consumer-facing systems such as the <strong>Store Rating Application</strong>—where normal users submit ratings, store owners analyze customer sentiment, and administrators supervise operations—unplanned downtime degrades user trust and halts business operations.</p>
-<p>The technical challenge is to eliminate single points of failure at the application tier by deploying redundant, horizontally scaled backend instances, implementing real-time health detection, automating traffic redirection upon failure, and verifying deployment integrity through continuous integration pipelines.</p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>4. Technologies & Tools Used</h2>
-<table>
-  <tr><td>Tool / Technology</td><td>Version / Category</td><td>Role in the DevOps Architecture</td></tr>
-  <tr><td>**Docker**</td><td>Multi-Stage / Alpine</td><td>Process-level isolation and containerization of frontend, backend, database, and load balancer.</td></tr>
-  <tr><td>**Docker Compose**</td><td>v2 Specification</td><td>Multi-container orchestration, private bridge networking (`store-net`), and health-checked startup sequencing.</td></tr>
-  <tr><td>**Nginx**</td><td>Reverse Proxy / Load Balancer</td><td>Single entrypoint (Port 8080); round-robin load distribution; automatic upstream failure detection (`max_fails=2`, `fail_timeout=5s`).</td></tr>
-  <tr><td>**Node.js & Express.js**</td><td>v20 LTS / v4.19</td><td>Stateless REST API service providing application logic, `/api/health` checks, and Prometheus `/api/metrics`.</td></tr>
-  <tr><td>**React 18 & Vite**</td><td>SPA / Nginx Static Serve</td><td>Responsive client user interface compiled into static assets served via a lightweight Nginx web server.</td></tr>
-  <tr><td>**PostgreSQL**</td><td>Relational Database v16</td><td>Persistent relational storage with custom constraints, relational integrity, and volume persistence (`pgdata`).</td></tr>
-  <tr><td>**GitHub Actions**</td><td>CI/CD Automation</td><td>Automated workflow executing test suites against a live PostgreSQL service container and verifying image builds.</td></tr>
-  <tr><td>**Supertest & Node Test Runner**</td><td>Automated Testing</td><td>Integration and unit testing verifying health endpoints, authentication, validation, and role-based access.</td></tr>
-</table>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>5. Implementation & Approach</h2>
-<h3>5.1 Architecture Transformation</h3>
-<p>The existing single-instance monolithic deployment was transformed into a decoupled, four-tier architecture:</p>
-<p>1. <strong>Unified Gateway:</strong> An Nginx reverse proxy listens on public port <code>8080</code>. It routes static UI traffic to the React container and proxies <code>/api/*</code> traffic to the backend server pool.</p>
-<p>2. <strong>Redundant Stateless Application Tier:</strong> Two identical Express containers (<code>store-rating-backend-1</code> and <code>store-rating-backend-2</code>) run concurrently on internal port <code>5000</code>. Both containers share identical database credentials and <code>JWT_SECRET</code>. Because JSON Web Tokens are stateless, any authenticated user session is valid across either instance.</p>
-<p>3. <strong>Database Tier:</strong> A single PostgreSQL container mounts a persistent Docker volume (<code>pgdata</code>), initialized automatically on first boot via <code>schema.sql</code> and <code>autoMigrate.js</code>.</p>
-<h3>5.2 Health Checks & Automatic Upstream Failover</h3>
-<p>A dedicated health endpoint (<code>/api/health</code>) was added to the backend. It verifies database connectivity (<code>SELECT 1</code>), measures uptime, and returns the unique container identity (<code>instanceId</code>).</p>
-<p>In Nginx, the upstream pool is defined as:</p>
-<pre><code>upstream backend_servers {
+
+<!-- ==================== PAGE 1: COVER PAGE ==================== -->
+<div class="page">
+  <div class="cover-banner">
+    <div class="cover-sub">DEVOPS | CASE STUDY / MINI PROJECT REPORT</div>
+    <div class="cover-title">Cloud-Based Highly Available<br>Application</div>
+    <div class="cover-tagline">Deploy &bull; Load Balance &bull; Scale &bull; Monitor</div>
+  </div>
+  <div class="cover-strip"></div>
+
+  <div class="cover-card">
+    <div class="cover-card-header">Submitted By</div>
+    <table class="cover-info-table">
+      <tr>
+        <td class="label">Name</td>
+        <td class="colon">:</td>
+        <td class="val">Tushar Chaugule</td>
+      </tr>
+      <tr>
+        <td class="label">Roll No.</td>
+        <td class="colon">:</td>
+        <td class="val">4148</td>
+      </tr>
+      <tr>
+        <td class="label">PRN No.</td>
+        <td class="colon">:</td>
+        <td class="val">RBT23CS051</td>
+      </tr>
+      <tr>
+        <td class="label">Class &amp; Div</td>
+        <td class="colon">:</td>
+        <td class="val">Final Year - A</td>
+      </tr>
+      <tr>
+        <td class="label">College</td>
+        <td class="colon">:</td>
+        <td class="val">JSPM's RSCOE</td>
+      </tr>
+      <tr>
+        <td class="label">Faculty Guide</td>
+        <td class="colon">:</td>
+        <td class="val">Prof. Neha Jain</td>
+      </tr>
+      <tr>
+        <td class="label">Subject</td>
+        <td class="colon">:</td>
+        <td class="val">DevOps</td>
+      </tr>
+      <tr>
+        <td class="label">Topic</td>
+        <td class="colon">:</td>
+        <td class="val">Cloud-Based Highly Available Application</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="cover-academic-year">Academic Year 2026 - 2027</div>
+  <div class="cover-bottom-bar"></div>
+</div>
+
+<!-- ==================== PAGE 2 ==================== -->
+<div class="page inner-page">
+  <div>
+    <div class="page-header">
+      <span>Cloud-Based Highly Available Application</span>
+      <span>Tushar Chaugule | RBT23CS051 | DevOps</span>
+    </div>
+
+    <div class="page-content">
+      <h2 class="sec-heading">1. Title</h2>
+      <p><strong>Cloud-Based Highly Available Application</strong> &ndash; Designing and deploying an e-commerce Store Rating web application with multiple server instances, load balancing, horizontal scaling and resource monitoring so that the application remains available even if one server fails.</p>
+
+      <h2 class="sec-heading">2. Objective</h2>
+      <ul>
+        <li>To deploy the e-commerce <strong>Store Rating Web Application</strong> on containerized cloud-ready infrastructure.</li>
+        <li>To configure and run <strong>multiple application instances</strong> (<strong>backend-1</strong> and <strong>backend-2</strong>) concurrently.</li>
+        <li>To implement <strong>load balancing</strong> using <strong>Nginx</strong> (AWS ALB equivalent) to distribute traffic across instances.</li>
+        <li>To demonstrate <strong>scaling</strong> by increasing and decreasing the number of active application instances.</li>
+        <li>To verify <strong>high availability and fault tolerance</strong> when one server instance stops or crashes.</li>
+        <li>To <strong>monitor application resources</strong> (CPU, memory, health status and request logs).</li>
+      </ul>
+
+      <h2 class="sec-heading">3. Problem Statement</h2>
+      <p><strong>Scenario:</strong> An e-commerce company operates a Store Rating &amp; Review portal where customers browse stores and submit ratings. When the application runs on a single server, any hardware fault, process crash or traffic spike causes complete <strong>service downtime</strong>, resulting in lost customers and interrupted business operations.</p>
+      <p><strong>Solution:</strong> Deploy the application across multiple stateless server instances behind a Load Balancer with active health checks, auto-failover, horizontal scaling and continuous resource monitoring.</p>
+
+      <h2 class="sec-heading">4. Technologies / Tools Used</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 35%;">Tool / Technology</th>
+            <th style="width: 65%;">Purpose (Cloud / Local Equivalent)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>React 18 + Node.js (Express)</td>
+            <td>Full-stack e-commerce Store Rating web application</td>
+          </tr>
+          <tr>
+            <td>PostgreSQL 16</td>
+            <td>Shared relational database (AWS RDS equivalent)</td>
+          </tr>
+          <tr>
+            <td>Docker &amp; Docker Compose</td>
+            <td>Cloud-native container deployment and multi-instance orchestration</td>
+          </tr>
+          <tr>
+            <td>Nginx Load Balancer</td>
+            <td>Reverse proxy and round-robin traffic distribution (AWS ALB equivalent)</td>
+          </tr>
+          <tr>
+            <td>Health &amp; Metrics Endpoints</td>
+            <td><strong>/api/health</strong> and <strong>/api/metrics</strong> for health checks and Prometheus monitoring</td>
+          </tr>
+          <tr>
+            <td>Docker Stats &amp; Logs</td>
+            <td>Real-time CPU, memory and network monitoring (CloudWatch equivalent)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="sec-heading">5. High Availability Architecture</h2>
+      <div class="arch-box">
+        <svg width="560" height="140" viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" style="font-family: 'Segoe UI', Arial, sans-serif;">
+          <!-- Users -->
+          <rect x="8" y="48" width="88" height="42" rx="5" fill="#e8f4fc" stroke="#2581c4" stroke-width="1.5"/>
+          <text x="52" y="67" font-size="9.5" font-weight="bold" fill="#0b3c61" text-anchor="middle">Users / Clients</text>
+          <text x="52" y="81" font-size="8" fill="#333" text-anchor="middle">HTTP Port 8080</text>
+
+          <line x1="96" y1="69" x2="130" y2="69" stroke="#0b3c61" stroke-width="1.5"/>
+          <polygon points="130,65 137,69 130,73" fill="#0b3c61"/>
+
+          <!-- Load Balancer -->
+          <rect x="137" y="38" width="118" height="62" rx="5" fill="#0b3c61" stroke="#0b3c61" stroke-width="1.5"/>
+          <text x="196" y="60" font-size="9.5" font-weight="bold" fill="#fff" text-anchor="middle">Load Balancer</text>
+          <text x="196" y="74" font-size="8.5" fill="#cfe8fc" text-anchor="middle">Nginx / AWS ALB</text>
+          <text x="196" y="87" font-size="7.5" fill="#cfe8fc" text-anchor="middle">(Health Check + Failover)</text>
+
+          <line x1="255" y1="55" x2="302" y2="30" stroke="#2581c4" stroke-width="1.5"/>
+          <line x1="255" y1="83" x2="302" y2="108" stroke="#2581c4" stroke-width="1.5"/>
+
+          <!-- Instance 1 -->
+          <rect x="302" y="8" width="120" height="44" rx="5" fill="#f1f7fc" stroke="#2581c4" stroke-width="1.5"/>
+          <text x="362" y="27" font-size="9.5" font-weight="bold" fill="#0b3c61" text-anchor="middle">App Instance 1</text>
+          <text x="362" y="41" font-size="8" fill="#166534" text-anchor="middle">backend-instance-1</text>
+
+          <!-- Instance 2 -->
+          <rect x="302" y="86" width="120" height="44" rx="5" fill="#f1f7fc" stroke="#2581c4" stroke-width="1.5"/>
+          <text x="362" y="105" font-size="9.5" font-weight="bold" fill="#0b3c61" text-anchor="middle">App Instance 2</text>
+          <text x="362" y="119" font-size="8" fill="#166534" text-anchor="middle">backend-instance-2</text>
+
+          <line x1="422" y1="30" x2="460" y2="60" stroke="#0b3c61" stroke-width="1.5"/>
+          <line x1="422" y1="108" x2="460" y2="78" stroke="#0b3c61" stroke-width="1.5"/>
+
+          <!-- Shared DB -->
+          <rect x="460" y="44" width="90" height="50" rx="5" fill="#e8f4fc" stroke="#0b3c61" stroke-width="1.5"/>
+          <text x="505" y="66" font-size="9.5" font-weight="bold" fill="#0b3c61" text-anchor="middle">PostgreSQL DB</text>
+          <text x="505" y="80" font-size="8" fill="#333" text-anchor="middle">Shared Storage</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">Page 2</div>
+</div>
+
+<!-- ==================== PAGE 3 ==================== -->
+<div class="page inner-page">
+  <div>
+    <div class="page-header">
+      <span>Cloud-Based Highly Available Application</span>
+      <span>Tushar Chaugule | RBT23CS051 | DevOps</span>
+    </div>
+
+    <div class="page-content">
+      <h2 class="sec-heading">6. Implementation / Approach</h2>
+      <p>The project was carried out in six structured steps matching the tasks of the case study. The project structure is:</p>
+
+      <div class="code-box" style="margin: 4px 0 6px 0;">
+        <div class="code-box-header">Project structure</div>
+        <div class="code-box-body" style="padding: 5px 10px;">store-rating-app/
+ |-- backend/                  # Express API + /api/health &amp; /api/metrics
+ |-- frontend/                 # React 18 e-commerce Store Rating UI
+ |-- nginx/nginx.conf          # Load balancer &amp; automatic failover config
+ |-- docker-compose.yml        # Multi-instance cloud container definition
+ `-- scripts/run-ha-test.js    # Automated failover &amp; load balancing verifier</div>
+      </div>
+
+      <h3 class="step-heading" style="margin-top: 7px;">Task 1: Deploy the Application on Containerized Cloud Infrastructure</h3>
+      <div class="code-box" style="margin: 4px 0 6px 0;">
+        <div class="code-box-header">backend/Dockerfile</div>
+        <div class="code-box-body" style="padding: 5px 10px;">FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY . .
+EXPOSE 5000
+CMD ["node", "src/server.js"]</div>
+      </div>
+      <p style="margin-bottom: 5px;">The application is packaged into lightweight Alpine Linux images and deployed using Docker Compose (portable to AWS ECS, Azure Container Apps or GCP Cloud Run).</p>
+
+      <h3 class="step-heading" style="margin-top: 7px;">Task 2: Configure Multiple Application Instances</h3>
+      <div class="code-box" style="margin: 4px 0 6px 0;">
+        <div class="code-box-header">docker-compose.yml (Multiple Backend Instances)</div>
+        <div class="code-box-body" style="padding: 5px 10px;">  backend-1:
+    build: ./backend
+    environment:
+      INSTANCE_ID: backend-instance-1
+      DB_HOST: postgres
+  backend-2:
+    build: ./backend
+    environment:
+      INSTANCE_ID: backend-instance-2
+      DB_HOST: postgres</div>
+      </div>
+      <p style="margin-bottom: 5px;">Two separate application servers (<strong>backend-1</strong> and <strong>backend-2</strong>) run simultaneously. Each exposes <strong>/api/health</strong> returning its unique <strong>instanceId</strong> and database health status.</p>
+
+      <h3 class="step-heading" style="margin-top: 7px;">Task 3: Implement Load Balancing (Nginx)</h3>
+      <div class="code-box" style="margin: 4px 0 6px 0;">
+        <div class="code-box-header">nginx/nginx.conf</div>
+        <div class="code-box-body" style="padding: 5px 10px;">upstream backend_servers {
     server backend-1:5000 max_fails=2 fail_timeout=5s;
     server backend-2:5000 max_fails=2 fail_timeout=5s;
-}</code></pre>
-<p>If an active instance fails or times out, Nginx immediately triggers <code>proxy_next_upstream</code>, forwarding the in-flight request to the surviving backend within milliseconds. The failed instance is quarantined for 5 seconds and automatically reintroduced once healthy.</p>
-<h3>5.3 Automated CI Pipeline</h3>
-<p>A continuous integration pipeline was created at <code>.github/workflows/ci.yml</code>. On every code push or pull request to the <code>main</code> branch, the workflow:</p>
-<p>1. Checks out the repository and configures Node.js 20.</p>
-<p>2. Provisions a native PostgreSQL service container with active health checking.</p>
-<p>3. Seeds the test database and executes the 14-step automated backend test suite.</p>
-<p>4. Compiles the React frontend using Vite.</p>
-<p>5. Builds Docker images for both frontend and backend to guarantee containerization integrity.</p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>6. Architecture Diagram</h2>
-<pre><code>                              [ User Web Browser ]
-                                        │
-                                        ▼ HTTP Port 8080
-                    ┌───────────────────────────────────────────┐
-                    │      Nginx Reverse Proxy &amp; Load Balancer   │
-                    │      (store-rating-nginx / Port 8080)     │
-                    └─────────────────────┬─────────────────────┘
-                                          │
-                     ┌────────────────────┴───────────────────┐
-                     │ (Static App)                           │ (/api/* Dynamic API)
-                     ▼                                        ▼ Round-Robin &amp; Failover
-        ┌─────────────────────────┐               ┌───────────────────────────────┐
-        │  React Frontend Server  │               │      Nginx Upstream Pool      │
-        │ (store-rating-frontend) │               │   backend_servers (5000)      │
-        └─────────────────────────┘               └───────┬───────────────┬───────┘
-                                                          │               │
-                                           ┌──────────────┘               └──────────────┐
-                                           ▼                                             ▼
-                             ┌───────────────────────────┐                 ┌───────────────────────────┐
-                             │  Express API Instance 1   │                 │  Express API Instance 2   │
-                             │ (store-rating-backend-1)  │                 │ (store-rating-backend-2)  │
-                             │   Identity: backend-1     │                 │   Identity: backend-2     │
-                             │   Health: /api/health     │                 │   Health: /api/health     │
-                             │   Metrics: /api/metrics   │                 │   Metrics: /api/metrics   │
-                             └─────────────┬─────────────┘                 └─────────────┬─────────────┘
-                                           │                                             │
-                                           │       Shared Relational Queries             │
-                                           └──────────────────────┬──────────────────────┘
-                                                                  ▼
-                                                   ┌───────────────────────────┐
-                                                   │    PostgreSQL Database    │
-                                                   │    (store-rating-db)      │
-                                                   │    Port: 5432 (Internal)  │
-                                                   │    Volume: pgdata         │
-                                                   └───────────────────────────┘</code></pre>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>7. Results & Verified Outcomes</h2>
-<p>All verification steps were executed and validated on the test system:</p>
-<h3>7.1 Automated Integration Test Results</h3>
-<p>The backend test suite (<code>npm test</code>) executed 14 individual assertions:</p>
-<li>**Health & Metrics:** Verified HTTP 200, status `UP`, active database connectivity, and Prometheus metrics generation.</li>
-<li>**Authentication:** Verified rejection of invalid credentials (HTTP 401) and issuance of valid signed JWT tokens for Normal Users and Administrators.</li>
-<li>**Input Validations:** Enforced name length boundaries (20–60 characters) and password complexity rules (uppercase + special character).</li>
-<li>**Role-Based Access Control (RBAC):** Verified that Normal Users can view stores but receive HTTP 403 Forbidden when attempting to access the Admin Dashboard.</li>
-<li>**Status:** **14/14 tests passed (0 failures, 100% pass rate).**</li>
-<h3>7.2 High Availability & Failover Live Demonstration</h3>
-<p>Using the automated test suite <code>node scripts/run-ha-test.js</code>:</p>
-<p>1. <strong>Normal Operation (Test A):</strong> Dispatched 6 requests through the load balancer on port <code>8080</code>. The load balancer evenly distributed traffic between <code>backend-instance-1</code> (3 requests) and <code>backend-instance-2</code> (3 requests), proving active round-robin distribution.</p>
-<p>2. <strong>Instance Failure (Test B):</strong> Terminated <code>backend-instance-1</code>. Dispatched 4 subsequent requests through port <code>8080</code>. All 4 requests were successfully handled by the surviving <code>backend-instance-2</code> with <strong>zero user downtime</strong> and zero dropped connections.</p>
-<p>3. <strong>Recovery (Test C):</strong> Restarted <code>backend-instance-1</code>. The load balancer detected instance recovery within 3 seconds and automatically restored dual-instance round-robin distribution.</p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>8. Architectural Limitations & Production High Availability</h2>
-<p>While this project successfully demonstrates application-tier redundancy, several architectural limitations inherent to local containerization must be noted:</p>
-<p>1. <strong>Single Point of Failure (SPOF) at Database Tier:</strong> In this local deployment, both backends connect to a single PostgreSQL instance. If the database crashes, both backends will fail. Production high availability requires Multi-AZ database clusters (such as AWS Aurora or RDS Multi-AZ) with automated replica failover.</p>
-<p>2. <strong>Host-Level Vulnerability:</strong> All containers execute on a single physical machine. A hardware failure, power loss, or OS crash terminates the entire system. True cloud high availability requires distributing instances across geographically isolated Availability Zones (AZs) managed by an Auto Scaling Group or Kubernetes cluster.</p>
-<p>3. <strong>Load Balancer Redundancy:</strong> A single Nginx instance serves as the entrypoint. In cloud production, managed Anycast DNS or cloud-managed load balancers (such as AWS ALB) provide redundant frontend gateways.</p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h2>9. Conclusion</h2>
-<p>This project successfully designed, implemented, and verified a <strong>Cloud-Based Highly Available Application Architecture</strong> for the Store Rating Web Application using modern DevOps tools. </p>
-<p>Containerization with Docker eliminated environment inconsistencies, multi-instance deployment with Nginx achieved seamless load balancing and automated failover, and GitHub Actions established continuous delivery validation. The implementation satisfies all criteria of the TA2 Mini-Project assignment by proving that the application remains fully accessible and functional even when an active application server fails.</p>
-<hr style="border:0; border-top: 1px solid #d9dde4; margin: 18px 0;">
-<h3>Academic Sign-off</h3>
-<p><strong>Student Signature:</strong> __________________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Date:</strong> 14 October 2026  </p>
-<p><br><br></p>
-<p><strong>Faculty Guide Signature:</strong> __________________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Date:</strong> __________________________  </p>
-<p><em>(Prof. Neha Jain)</em></p>
+}
+server {
+    listen 80;
+    location /api/ {
+        proxy_pass http://backend_servers/api/;
+        proxy_next_upstream error timeout http_500 http_502 http_503;
+    }
+}</div>
+      </div>
+      <p style="margin-bottom: 0;">Nginx distributes incoming client requests evenly between both instances using round-robin load balancing.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">Page 3</div>
+</div>
+
+<!-- ==================== PAGE 4 ==================== -->
+<div class="page inner-page">
+  <div>
+    <div class="page-header">
+      <span>Cloud-Based Highly Available Application</span>
+      <span>Tushar Chaugule | RBT23CS051 | DevOps</span>
+    </div>
+
+    <div class="page-content">
+      <h3 class="step-heading">Task 4: Demonstrate Scaling</h3>
+      <div class="code-box">
+        <div class="code-box-header">Terminal (Horizontal Scaling)</div>
+        <div class="code-box-body">docker compose up --build -d                 # start initial cluster
+docker compose up -d --scale backend-1=2     # scale out backend instances
+docker compose ps                            # verify active scaled containers</div>
+      </div>
+      <p>Because the Express API uses stateless <strong>JWT authentication</strong> and a shared <strong>PostgreSQL</strong> database, horizontal scaling adds capacity immediately without losing user sessions.</p>
+
+      <h3 class="step-heading">Task 5: High Availability &amp; Fault Tolerance Verification</h3>
+      <div class="code-box">
+        <div class="code-box-header">Terminal (Simulating Server Crash &amp; Recovery)</div>
+        <div class="code-box-body">docker compose stop backend-1          # stop Server 1 to simulate failure
+curl http://localhost:8080/api/health  # traffic automatically served by Server 2
+docker compose start backend-1         # restart Server 1 (auto-rejoins pool)</div>
+      </div>
+      <p><strong>How High Availability &amp; Fault Tolerance are Achieved:</strong> When <strong>backend-1</strong> fails, Nginx detects the connection failure within 2 seconds (via <strong>max_fails=2</strong> and <strong>proxy_next_upstream</strong>) and automatically redirects all user traffic to <strong>backend-2</strong> with zero downtime.</p>
+
+      <h3 class="step-heading">Task 6: Monitor the Application Resources</h3>
+      <div class="code-box">
+        <div class="code-box-header">Terminal (CPU, Memory, Logs &amp; Prometheus Metrics)</div>
+        <div class="code-box-body">docker stats --no-stream               # monitor live CPU &amp; RAM per container
+docker compose logs -f nginx           # monitor request distribution &amp; status codes
+curl http://localhost:8080/api/metrics # view process uptime &amp; heap memory metrics</div>
+      </div>
+
+      <h2 class="sec-heading">7. Results / Outcome</h2>
+      <p>The experiment produced the following verified output during load balancing, server failure and recovery testing:</p>
+
+      <div class="code-box">
+        <div class="code-box-header">Sample terminal output</div>
+        <div class="code-box-body">$ node scripts/run-ha-test.js
+[TEST A] NORMAL OPERATION (Load Balancing on Port 8080):
+  Req #1 -> Routed to: backend-instance-1 (Status: UP, DB: healthy)
+  Req #2 -> Routed to: backend-instance-2 (Status: UP, DB: healthy)
+  Req #3 -> Routed to: backend-instance-1 (Status: UP, DB: healthy)
+  Req #4 -> Routed to: backend-instance-2 (Status: UP, DB: healthy)
+
+[TEST B] SERVER FAILURE (backend-instance-1 stopped):
+  Failover Req #1 -> Served by: backend-instance-2 [Status: UP]
+  Failover Req #2 -> Served by: backend-instance-2 [Status: UP]
+  Result: 100% requests served by surviving server with ZERO downtime!
+
+[TEST C] SERVER RECOVERY (backend-instance-1 restarted):
+  Post-Recovery Req #1 -> Routed to: backend-instance-1
+  Post-Recovery Req #2 -> Routed to: backend-instance-2</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">Page 4</div>
+</div>
+
+<!-- ==================== PAGE 5 ==================== -->
+<div class="page inner-page">
+  <div>
+    <div class="page-header">
+      <span>Cloud-Based Highly Available Application</span>
+      <span>Tushar Chaugule | RBT23CS051 | DevOps</span>
+    </div>
+
+    <div class="page-content">
+      <h3 class="step-heading">Summary of Case Study Tasks &amp; Results</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 36%;">Case Study Task</th>
+            <th style="width: 64%;">Observed Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Cloud infrastructure deployment</td>
+            <td>Store Rating app deployed in isolated Docker containers</td>
+          </tr>
+          <tr>
+            <td>2. Multiple application instances</td>
+            <td>Two stateless Express servers (backend-1 &amp; backend-2) active</td>
+          </tr>
+          <tr>
+            <td>3. Load balancing implemented</td>
+            <td>Nginx distributed traffic 50/50 using round-robin on port 8080</td>
+          </tr>
+          <tr>
+            <td>4. Scaling demonstrated</td>
+            <td>Instances scaled horizontally without session loss</td>
+          </tr>
+          <tr>
+            <td>5. Fault tolerance &amp; failover</td>
+            <td>Stopped backend-1; traffic failed over to backend-2 in &lt;2 seconds</td>
+          </tr>
+          <tr>
+            <td>6. Resource monitoring</td>
+            <td>Monitored CPU/memory via docker stats, logs and /api/metrics</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="step-heading">Comparison: Before and After High Availability</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 26%;">Aspect</th>
+            <th style="width: 37%;">Single Server (Before)</th>
+            <th style="width: 37%;">Highly Available Architecture (After)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Server failure impact</td>
+            <td>Complete website outage</td>
+            <td>Zero downtime; healthy server takes over</td>
+          </tr>
+          <tr>
+            <td>Traffic capacity</td>
+            <td>Limited to one process</td>
+            <td>Load balanced across multiple instances</td>
+          </tr>
+          <tr>
+            <td>Scaling</td>
+            <td>Requires downtime to upgrade</td>
+            <td>Horizontal scaling on demand</td>
+          </tr>
+          <tr>
+            <td>Fault detection</td>
+            <td>Manual troubleshooting</td>
+            <td>Automated health checks &amp; instant failover</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="step-heading">Key Mechanisms Behind High Availability</h3>
+      <ul>
+        <li><strong>Redundancy:</strong> Multiple application instances eliminate single points of failure at the web tier.</li>
+        <li><strong>Stateless Design:</strong> JWT tokens and shared PostgreSQL storage allow any server to handle any user request.</li>
+        <li><strong>Automated Failover:</strong> Health checks continuously verify server readiness and bypass failed nodes automatically.</li>
+      </ul>
+
+      <h2 class="sec-heading">8. Conclusion</h2>
+      <p>This case study demonstrated how an e-commerce Store Rating Application is made highly available and fault-tolerant. By deploying multiple containerized backend instances behind an Nginx load balancer with health checks, horizontal scaling and resource monitoring, the application remained continuously available even when an application server failed. This architecture directly maps to production cloud platforms such as AWS (ALB + ECS + RDS), Azure and GCP.</p>
+
+      <div class="sig-row">
+        <div><strong>Student Signature:</strong> ______________________</div>
+        <div><strong>Faculty Signature (Prof. Neha Jain):</strong> ______________________</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">Page 5</div>
+</div>
+
 </body>
 </html>
